@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <header class="text-center my-4">
+            <h1 class="mb-4">Todo List</h1>
+            <form method="post" class="form-inline">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn add-task-btn">Add Task</button>
+            </form>
+        </header>
+
+        <ul class="todos">
+            {% for task in tasks %}
+            <br>
+                <li class="todo-item">
+                    <span>
+                        {% if task.is_complete %}
+                            <strike>{{ task.task }}</strike>
+                        {% else %}
+                            {{ task.task }}
+                        {% endif %}
+                    </span>
+                    <div class="todo-actions">
+                        {% if task.is_complete %}
+                        <a href="{% url 'task_complete' task.pk %}" class="ucomplete-link">Unmark</a>
+                        {% else %}
+                        <a href="{% url 'task_complete' task.pk %}" class="complete-link">  Mark</a>
+                        {% endif %}
+                        <a href="{% url 'task_edit' task.pk %}" class="edit-link">Edit</a>
+                        <a href="{% url 'task_delete' task.pk %}" class="delete-link">Delete</a>
+            
+                    </div>
+                </li> 
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
